@@ -1,0 +1,37 @@
+I created one Vnet with 2 subnets, each conatin a VM
+
+The javascript that configure the webserver should be, althogh I didn't do it successfully:
+
+const http = require('http');
+const server = http.createServer((req, res) => {
+   res.statusCode = 200;
+   res.setHeader('Content-Type', 'text/plain');
+   res.end('Hello World');
+});
+server.listen(80, () => console.log('Server running on port 80'));
+
+
+I downloaded the MySQL server and set uo the table and assign an user: azuser
+
+CREATE DATABASE mydatabase;
+USE mydatabase;
+CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(50));
+INSERT INTO users (id, name) VALUES (167320225, 'Xin Li');
+
+
+I then change the NSG rules to allow http and sql port from web server.
+
+This is the code that i used to connect the database from web server:
+
+const mysql = require('mysql2');
+const connection = mysql.createConnection({
+   host: '10.0.0.132',
+   user: 'azureser',
+   password: 'mypassword',
+   database: 'mydatabase'
+});
+
+connection.connect((err) => {
+   if (err) throw err;
+   console.log('Connected to database');
+});
